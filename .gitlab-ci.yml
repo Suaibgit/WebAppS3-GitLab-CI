@@ -1,5 +1,28 @@
+stages:
+    - build
+    - test
+    - unit_test
+
+
 build website:
     image: node:16-alpine
+    stage: build
     script:
         - yarn install
         - yarn build
+    artifacts:
+        paths:
+            - build
+
+test website:
+    image: node:16-alpine
+    stage: test
+    script:
+        - test -f build/index.html.txt
+
+
+unit_test website:
+    image: node:16-alpine
+    stage: unit_test
+    script:
+        - yarn test
