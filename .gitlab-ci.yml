@@ -1,7 +1,7 @@
 stages:
     - build
     - test
-    - unit_test
+#    - unit_test
 
 
 build website:
@@ -15,14 +15,15 @@ build website:
             - build
 
 test website:
+    image: alpine
+    stage: test
+    script:
+        - test -f build/index.html
+
+
+unit test website:
     image: node:16-alpine
     stage: test
     script:
-        - test -f build/index.html.txt
-
-
-unit_test website:
-    image: node:16-alpine
-    stage: unit_test
-    script:
+        - yarn install
         - yarn test
