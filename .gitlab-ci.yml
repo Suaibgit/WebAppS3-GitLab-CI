@@ -1,11 +1,14 @@
 stages:
     - build
     - test
-    - deploy
-    - post deploy
+    - deploy staging
+    - deploy production
+    - test staging
+    - test production
 
 variables:
     APP_BASE_URL: http://suaib-15032022.s3-website.eu-central-1.amazonaws.com
+    APP_BASE_URL_STAGING: http://suaib-15032022-staging.s3-website-us-east-1.amazonaws.com
 
 build website:
     image: node:16-alpine
@@ -29,8 +32,27 @@ test website:
         - sleep 10
         - curl http://localhost:3000 | grep "React App"
 
-deploy to s3:
-    stage: deploy
+deploy to staging:
+    stage: deploy staging
+    image:
+        name: amazon/aws-cli:2.4.25
+        entrypoint: [""]
+    rules:
+        - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+    script:
+        - aws --version
+        - aws s3 sync build s3://$MY_BUCKET_GITLAB_STAGING --delete
+
+staging tests:
+    stage: test staging
+    image: curlimages/curl
+    rules:
+        - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+    script:
+        - curl $APP_BASE_URL_STAGING | grep "React App"
+
+deploy to production:
+    stage: deploy production
     image:
         name: amazon/aws-cli:2.4.25
         entrypoint: [""]
@@ -41,7 +63,7 @@ deploy to s3:
         - aws s3 sync build s3://$MY_BUCKET_GITLAB --delete
 
 production tests:
-    stage: post deploy
+    stage: test production
     image: curlimages/curl
     rules:
         - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
