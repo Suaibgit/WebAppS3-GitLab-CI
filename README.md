@@ -1,12 +1,12 @@
-# DevOps with GitLab CI Course - Build Pipelines and Deploy to AWS
+# Building a CI/CD pipeline for a simple React App and Deploy to AWS S3
 
-👋 Welcome to this GitLab CI course available on freeCodeCamp.
+## Description
 
-## Getting started
+The project files have been forked from public GitLab repo, except the pipeline file .gitlab-ci.yml. This project is all about this file. In this file contains a script that will build the project, test the project and deploy it to AWS S3.
 
-- **Check the** [**course notes**](docs/course-notes.md)
-- Watch the [GitLab CI course on freecodecamp](https://www.youtube.com/watch?v=PGyhBwLyK2U)
+## Features
 
-- Something is wrong? If you want to report an issue or need help with something, you can create an issue. Please include screenshots and as many details as possible. [**Submit an issue.**](https://gitlab.com/gitlab-course-public/freecodecamp-gitlab-ci/-/issues/new?issue%5Bmilestone_id%5D=)
-
-[![GitLab course on YouTube](https://img.youtube.com/vi/PGyhBwLyK2U/maxresdefault.jpg)](https://www.youtube.com/watch?v=PGyhBwLyK2U)
+- Continuous Deployment and Continuous Delivery concept is implemented by introducing staging approach where two S3 bucket is used to test deployment to check any error on final Delivery.
+- Main branch is protected. Committing from any other branch will not deploy the App to AWS.
+- All other branches have permission only to build and test the app.
+- After an approval of a merge request from any feature branch will allow deploying the app to AWS.
